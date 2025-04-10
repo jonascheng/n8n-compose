@@ -1,10 +1,12 @@
-version: "3.7"
-
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    image: docker.n8n.io/n8nio/n8n:1.85.4
     container_name: n8n
     restart: unless-stopped
+    environment:
+      # Enable community nodes as tools
+      N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE: true
+      MCP_BRAVE_API_KEY: ${MCP_BRAVE_API_KEY}
     ports:
       - "5678:5678"
     volumes:
@@ -26,7 +28,7 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-info}
     ports:
       - "8191:8191"
-  
+
 volumes:
   n8n_data:
     external: true
