@@ -4,22 +4,26 @@ services:
     container_name: n8n
     restart: unless-stopped
     environment:
-      # Enable community nodes as tools
-      N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE: true
-      MCP_BRAVE_API_KEY: ${MCP_BRAVE_API_KEY}
+      - N8N_PORT=5678
+      - N8N_HOST=${N8N_HOST}
+      - N8N_WEBHOOK=${N8N_WEBHOOK}
+      - WEBHOOK_URL=https://${N8N_WEBHOOK}/
     ports:
       - "5678:5678"
     volumes:
       - n8n_data:/home/node/.n8n
-  ngrok:
-    image: ngrok/ngrok:latest
-    container_name: ngrok
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
     restart: unless-stopped
-    command:
-      - "http"
-      - "http://host.docker.internal:5678"
     environment:
-      NGROK_AUTHTOKEN: ${NGROK_AUTHTOKEN}
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    command:
+      - "tunnel" 
+      - "--no-autoupdate"
+      - "run"
+      - "--token" 
+      - "${CLOUDFLARE_TUNNEL_TOKEN}"
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
