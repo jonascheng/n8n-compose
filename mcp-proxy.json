@@ -1,0 +1,33 @@
+{
+  "mcpProxy": {
+    "baseURL": "http://host.docker.internal:9090",
+    "addr": ":9090",
+    "name": "MCP Proxy",
+    "version": "1.0.0",
+    "options": {
+      "toolFilter": {  
+        "mode": "allow"
+      },
+      "panicIfInvalid": false,
+      "logEnabled": true,
+      "authTokens": [
+        "kHUa$rRaC348"
+      ]
+    }
+  },
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ]
+    },
+    "fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ]
+    }
+  }
+}
